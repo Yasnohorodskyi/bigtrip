@@ -5,8 +5,15 @@ import {createSorter} from './view/sorter.js';
 import {createEventsList} from './view/events-list.js';
 import {createNewPointElement} from './view/new-point.js';
 import {createEvent} from './view/event.js';
+//mock data
+import {generateEvents} from './mock/events.js';
+import {EMPTY_EVENT} from './constant.js';
 
-const EVENTS_COUNT = 7;
+const EVENTS_COUNT = 3;
+
+const eventsList = generateEvents(EVENTS_COUNT);
+
+console.log(eventsList);
 
 const render = (container, template, place = 'beforeend') => {
   container.insertAdjacentHTML(place, template);
@@ -31,8 +38,9 @@ render(tripEventsElement, createSorter());
 render(tripEventsElement, createEventsList());
 
 const eventsListElement = tripEventsElement.querySelector('.trip-events__list');
-render(eventsListElement, createNewPointElement());
+render(eventsListElement, createNewPointElement(EMPTY_EVENT));
+// render(eventsListElement, createNewPointElement(eventsList[0]));
 
-for (let i = 0; i < EVENTS_COUNT; i++) {
-  render(eventsListElement, createEvent());
+for (let i = 1; i < EVENTS_COUNT; i++) {
+  render(eventsListElement, createEvent(eventsList[i]));
 }
