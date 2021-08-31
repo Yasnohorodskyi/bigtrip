@@ -13,8 +13,6 @@ const EVENTS_COUNT = 3;
 
 const eventsList = generateEvents(EVENTS_COUNT);
 
-console.log(eventsList);
-
 const render = (container, template, place = 'beforeend') => {
   container.insertAdjacentHTML(place, template);
 };
