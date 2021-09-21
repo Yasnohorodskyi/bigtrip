@@ -23,11 +23,15 @@ export const humanizeTime = (eventDate) => {
   return eventTime.toLocaleString('en-GB', {hour: '2-digit', minute: '2-digit'});
 };
 
-export const getEventDuration = (dateFrom, dateTo) => {
+export const getEventTimeDelta = (dateFrom, dateTo) => {
   const startDate = new Date(dateFrom);
   const endDate = new Date(dateTo);
 
-  const delta = (endDate.getTime() - startDate.getTime()) / 60000;
+  return (endDate.getTime() - startDate.getTime()) / 60000;
+};
+
+export const getEventDuration = (dateFrom, dateTo) => {
+  const delta = getEventTimeDelta (dateFrom, dateTo);
   const timeEvent = delta / 60;
   const hourEvent = Math.trunc(timeEvent);
   const minutesEvent = delta % 60;

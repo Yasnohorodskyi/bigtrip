@@ -1,3 +1,4 @@
+import {nanoid} from 'nanoid';
 import {getRandomInteger} from '../utils/common.js';
 import {CITIES, EVENT_TYPES} from '../constant.js';
 import {offersByType} from './offers.js';
@@ -47,6 +48,7 @@ const getOffers = (type, offersList) => {
 const getEvent = (dateList, counter) => {
   const typeEvent = EVENT_TYPES[getRandomInteger(0, EVENT_TYPES.length-1)];
   return {
+    id: nanoid(),
     destination: CITIES[getRandomInteger(0, CITIES.length-1)],
     dateFrom: dateList[counter].start.toISOString(),
     dateTo: dateList[counter].end.toISOString(),
