@@ -1,3 +1,4 @@
+import AbstractView from './abstract.js';
 import {EVENT_TYPES, EVENT_TYPES_IN_POINT, CITIES, EMPTY_EVENT} from '../constant.js';
 import {humanizeDate, humanizeTime} from '../utils/date.js';
 import {getUpCasePhrase, getName} from '../utils/common.js';
@@ -40,7 +41,7 @@ const createPhotosListTemplate = (photosList) => {
   return photosList.map((photos) => `<img class="event__photo" src="${photos.src}" alt="Event photo"></img>`).join('');
 };
 
-export const createNewPointElement = (event = EMPTY_EVENT) => {
+const createNewPointElement = (event = EMPTY_EVENT) => {
   const {destination, dateFrom, dateTo, basePrice, type, offers} = event;
 
   const eventTypeMenuList = createEventTypeMenuListTemplate(EVENT_TYPES, type);
@@ -121,3 +122,26 @@ export const createNewPointElement = (event = EMPTY_EVENT) => {
   </li>`
   );
 };
+
+export default class NewPoint extends AbstractView {
+  constructor(event = EMPTY_EVENT) {
+    super();
+    this._event = event;
+
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+  }
+
+  getTemplate() {
+    return createNewPointElement(this._event);
+  }
+
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit(this._event);
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
+  }
+}

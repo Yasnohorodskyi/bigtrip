@@ -1,6 +1,8 @@
-const FILTERS = [`Everything`, `Future`, `Past`];
+import AbstractView from './abstract.js';
 
-export const createFilters = () => {
+const FILTERS = ['Everything', 'Future', 'Past'];
+
+const createFilters = () => {
   return (
     `<form class="trip-filters" action="#" method="get">
     ${FILTERS.map((filter) => `<div class="trip-filters__filter">
@@ -12,3 +14,8 @@ export const createFilters = () => {
   </form>`
   );
 };
+export default class Filters extends AbstractView {
+  getTemplate() {
+    return createFilters();
+  }
+}

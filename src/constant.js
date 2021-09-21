@@ -3,12 +3,12 @@ export const CITIES = ['Lisbon', 'Sintra', 'Vila Nova de Gaia', 'Porto', 'Loures
 export const EVENT_TYPES = ['taxi', 'bus', 'train', 'ship', 'transport', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 export const EVENT_TYPES_IN_POINT = ['check-in', 'sightseeing', 'restaurant'];
 export const EMPTY_EVENT = {
-  destination: 'Lisbon',
+  destination: CITIES[0],
   dateFrom: null,
   dateTo: null,
   basePrice: 0,
   isFavorite: false,
-  type: 'taxi',
+  type: EVENT_TYPES[0],
   offers: [[
     {
       offerTytle: 'Upgrade to a business class',
@@ -36,4 +36,10 @@ export const EMPTY_EVENT = {
       isChecked: false,
     },
   ]],
+};
+
+export const SortType = {
+  EVENT: 'event',
+  PRICE: 'price',
+  TIME: 'time',
 };

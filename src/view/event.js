@@ -1,4 +1,4 @@
-// import {offersByType} from '../mock/offers.js';
+import AbstractView from './abstract.js';
 import {EVENT_TYPES_IN_POINT} from '../constant.js';
 import {getEventDuration, humanizeDateDay} from '../utils/date.js';
 import {getUpCasePhrase} from '../utils/common.js';
@@ -25,7 +25,7 @@ const createOffersEventTemplate = (offers) => {
      </ul>`);
 };
 
-export const createEvent = (event) => {
+const createEvent = (event) => {
   const {destination, dateFrom, dateTo, basePrice, isFavorite, type, offers} = event;
   const typeEventUp = getUpCasePhrase(type);
   const action = EVENT_TYPES_IN_POINT.includes(type) ? 'in' : 'to';
@@ -64,4 +64,38 @@ export const createEvent = (event) => {
   </li>`
   );
 };
+
+export default class Event extends AbstractView{
+  constructor(event) {
+    super();
+    this._event = event;
+
+    this._editClickHandler = this._editClickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+  }
+
+  getTemplate() {
+    return createEvent(this._event);
+  }
+
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
+  }
+
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  }
+
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
+  }
+
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement().querySelector('.event__favorite-btn').addEventListener('click', this._favoriteClickHandler);
+  }
+}
 
