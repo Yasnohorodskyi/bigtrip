@@ -42,7 +42,7 @@ const getOffers = (type, offersList) => {
     }
   });
 
-  return result;
+  return result[0];
 };
 
 const getEvent = (dateList, counter) => {

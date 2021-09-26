@@ -24,7 +24,7 @@ const getTriRange = (events) => {
 };
 
 const getOffersPrice = (offer) => {
-  return offer[0].reduce((total, offer) => {
+  return offer.reduce((total, offer) => {
     return total + offer.offerPrice;
   }, 0);
 };

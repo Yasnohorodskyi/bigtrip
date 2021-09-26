@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const getTripDates = (events) => {
   const dateSet = new Set();
   for (const event of events) {
@@ -24,17 +26,14 @@ export const humanizeTime = (eventDate) => {
 };
 
 export const getEventTimeDelta = (dateFrom, dateTo) => {
-  const startDate = new Date(dateFrom);
-  const endDate = new Date(dateTo);
-
-  return (endDate.getTime() - startDate.getTime()) / 60000;
+  return (moment.duration(Date.parse(dateTo) - Date.parse(dateFrom))) / 60000;
 };
 
 export const getEventDuration = (dateFrom, dateTo) => {
   const delta = getEventTimeDelta (dateFrom, dateTo);
   const timeEvent = delta / 60;
   const hourEvent = Math.trunc(timeEvent);
-  const minutesEvent = delta % 60;
+  const minutesEvent = Math.trunc(delta % 60);
 
   if (timeEvent < 1) {
     return minutesEvent + 'M';

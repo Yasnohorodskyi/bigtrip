@@ -9,13 +9,21 @@ export const getRandomInteger = (a = 0, b = 1) => {
 
 export const getUpCasePhrase = (phrase) => {
   if (phrase !== '') {
-    return phrase[0].toUpperCase() + phrase.slice(1);
+    return [...phrase][0].toUpperCase() + phrase.slice(1);
   }
   return '';
 };
 
 export const getName = (phrase) => {
   return phrase.toLowerCase().split(' ').join('-');
+};
+
+export const getTytleFromName = (phrase) => {
+
+  const phraseArray = [];
+  const phraseSplit = phrase.split('-');
+  phraseArray[0] = getUpCasePhrase(phraseSplit[2]);
+  return phraseArray.concat(phraseSplit.slice(3)).join(' ');
 };
 
 export const updateItem = (items, update) => {

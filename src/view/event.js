@@ -5,7 +5,7 @@ import {getUpCasePhrase} from '../utils/common.js';
 
 const createOffersEventTemplate = (offers) => {
 
-  const offersList = offers[0].filter((offer) => offer.isChecked);
+  const offersList = offers.filter((offer) => offer.isChecked);
   let offersVisibleList = [];
 
   if (offersList.length > 3) {
