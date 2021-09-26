@@ -8,11 +8,9 @@ import {render} from './utils/render.js';
 //mock data
 import {generateEvents} from './mock/events.js';
 
-const EVENTS_COUNT = 22;
+const EVENTS_COUNT = 3;
 
 const eventsList = generateEvents(EVENTS_COUNT);
-// console.log(eventsList);
-
 // элементы в базовом index.html
 const siteMainElement = document.querySelector('.page-body');
 const tripInfoElement = siteMainElement.querySelector('.trip-main');
@@ -25,3 +23,4 @@ render(filtersElement, new FiltersView());
 
 const boardPresenter = new BoardPresenter(tripInfoElement,  tripEventsElement);
 boardPresenter.init(eventsList);
+
