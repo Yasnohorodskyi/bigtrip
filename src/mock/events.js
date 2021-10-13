@@ -1,7 +1,6 @@
 import {nanoid} from 'nanoid';
 import {getRandomInteger} from '../utils/common.js';
 import {CITIES, EVENT_TYPES} from '../constant.js';
-import {offersByType} from './offers.js';
 
 const PRICE_MULTIPLICATOR = 10;
 
@@ -45,7 +44,7 @@ const getOffers = (type, offersList) => {
   return result[0];
 };
 
-const getEvent = (dateList, counter) => {
+const getEvent = (dateList, counter, offersByType) => {
   const typeEvent = EVENT_TYPES[getRandomInteger(0, EVENT_TYPES.length-1)];
   return {
     id: nanoid(),
@@ -59,12 +58,12 @@ const getEvent = (dateList, counter) => {
   };
 };
 
-export const generateEvents = (eventCounter) => {
+export const generateEvents = (eventCounter, offersByType) => {
   const events = [];
   const dateList = getTimePoints(eventCounter);
 
   for (let i = 0; i < eventCounter; i++) {
-    events.push(getEvent(dateList, i));
+    events.push(getEvent(dateList, i, offersByType));
   }
   return events;
 };
