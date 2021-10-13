@@ -25,7 +25,10 @@ const getTriRange = (events) => {
 
 const getOffersPrice = (offer) => {
   return offer.reduce((total, offer) => {
-    return total + offer.offerPrice;
+    if(offer.isChecked) {
+      return total + offer.offerPrice;
+    }
+    return total;
   }, 0);
 };
 

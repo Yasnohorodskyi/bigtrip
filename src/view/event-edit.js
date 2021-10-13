@@ -57,7 +57,7 @@ const createPhotosListTemplate = (photosList) => {
   return photosList.map((photos) => `<img class="event__photo" src="${photos.src}" alt="Event photo"></img>`).join('');
 };
 
-const createNewPointElement = (data = EMPTY_EVENT) => {
+const createEventEditElement = (data = EMPTY_EVENT) => {
   const {destination, dateFrom, dateTo, basePrice, type, offers} = data;
 
   const eventTypeMenuList = createEventTypeMenuListTemplate(EVENT_TYPES, type);
@@ -115,11 +115,11 @@ const createNewPointElement = (data = EMPTY_EVENT) => {
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+          <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${basePrice}">
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-        <button class="event__reset-btn" type="reset">Cancel</button>
+        <button class="event__reset-btn" type="reset">Delete</button>
       </header>
       <section class="event__details">
         ${offersEventTemplate}
@@ -139,14 +139,15 @@ const createNewPointElement = (data = EMPTY_EVENT) => {
   );
 };
 
-export default class NewPoint extends SmartView {
+export default class EventEdit extends SmartView {
   constructor(event = EMPTY_EVENT) {
     super();
 
-    this._data = NewPoint.parseEventToData(event);
+    this._data = EventEdit.parseEventToData(event);
     this._datepicker = null;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._basePriceInputHandler = this._basePriceInputHandler.bind(this);
     this._typeInputHandler = this._typeInputHandler.bind(this);
     this._destinationChangeHandler = this._destinationChangeHandler.bind(this);
@@ -158,20 +159,32 @@ export default class NewPoint extends SmartView {
     this._setDatepicker();
   }
 
+  // Перегружаем метод родителя removeElement,
+  // чтобы при удалении удалялся более ненужный календарь
+  removeElement() {
+    super.removeElement();
+
+    if (this._datepicker) {
+      this._datepicker.destroy();
+      this._datepicker = null;
+    }
+  }
+
   reset(event) {
     this.updateData(
-      NewPoint.parseEventToData(event),
+      EventEdit.parseEventToData(event),
     );
   }
 
   getTemplate() {
-    return createNewPointElement(this._data);
+    return createEventEditElement(this._data);
   }
 
   restoreHandlers() {
     this._setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this._setDatepicker();
+    this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
   _setDatepicker() {
@@ -241,7 +254,7 @@ export default class NewPoint extends SmartView {
   _basePriceInputHandler(evt) {
     evt.preventDefault();
     this.updateData({
-      basePrice: evt.target.value,
+      basePrice: parseInt(evt.target.value),
     },true); // true не дает перерисовывать сразу после ввода
   }
 
@@ -281,6 +294,16 @@ export default class NewPoint extends SmartView {
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
     this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
+  }
+
+  _formDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(EventEdit.parseDataToEvent(this._data));
+  }
+
+  setDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteClickHandler);
   }
 
   static parseEventToData(event) {
